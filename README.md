@@ -1,7 +1,10 @@
 # React × Laravel デモアプリケーション
 
-フロントエンド（React + Vite）とバックエンド（Laravel 11 API）をまとめて検証。
-Docker Compose でバックエンドを立ち上げつつ、フロントエンドは Node.js で起動します。単体の起動手順も用意しているので、Docker を使わない検証も可能。
+フロントエンド（React + Vite）とバックエンド（Laravel 11 API）構成。
+コンポーネント粒度の最適化と状態管理の分離方針を検証。
+
+Docker Compose でバックエンドを立ち上げつつ、フロントエンドは Node.js で起動。
+単体の起動手順も用意しているので、Docker を使わない検証も可能。
 
 ## プロジェクト構成
 
@@ -74,11 +77,11 @@ npm run lint
 npm run format:check
 ```
 
-DB をリセットする場合は `docker compose exec app php artisan migrate:fresh --seed` を使用してください。
+DB をリセットする場合は `docker compose exec app php artisan migrate:fresh --seed` を使用。
 
 ## 動作確認ユーザー
 
-シーディングすると以下のユーザーが作成されます。
+シーディングすると以下のユーザーが作成。
 
 - メールアドレス: `test@example.com`
 - パスワード: `password`
@@ -86,14 +89,14 @@ DB をリセットする場合は `docker compose exec app php artisan migrate:f
 ## 品質チェックと CI
 
 - `npm run lint`（ESLint）と `npm run format:check`（Prettier）でローカル確認が可能。
-- `.github/workflows/lint.yml` で PR / push 時に自動チェック。違反がある場合は CI が失敗します。
+- `.github/workflows/lint.yml` で PR / push 時に自動チェック。違反がある場合は CI が失敗する。
 
 ## Cloudflare Pages への自動デプロイ
 
 - `.github/workflows/deploy-pages.yml` により、`main` ブランチへの push または手動実行で Cloudflare Pages へビルド＆デプロイします。
-- GitHub リポジトリに以下のシークレットを登録してください。  
+- GitHub リポジトリに以下のシークレットを登録。  
   - `CLOUDFLARE_ACCOUNT_ID`  
   - `CLOUDFLARE_API_TOKEN`（Pages:Edit 権限付き）  
   - `CLOUDFLARE_PAGES_PROJECT_NAME`
-- Cloudflare Pages ダッシュボードの「Settings > Environment Variables」で `VITE_API_BASE_URL` などの環境変数を設定します（Preview / Production 個別設定が可能）。
-- ワークフロー内では `npm run ci:lint` → `npm run build` → `frontend/dist` をアップロードするため、Lint/Prettier を通過しないコードはデプロイされません。
+- Cloudflare Pages ダッシュボードの「Settings > Environment Variables」で `VITE_API_BASE_URL` などの環境変数を設定。Preview / Production 個別設定が可能。
+- ワークフロー内では `npm run ci:lint` → `npm run build` → `frontend/dist` をアップロードするため、Lint/Prettier を通過しないコードはデプロイされない。
