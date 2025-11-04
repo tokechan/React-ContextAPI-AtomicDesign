@@ -1,8 +1,8 @@
 // src/pages/Register.tsx
-import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import styled from 'styled-components';
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import styled from "styled-components";
 
 const RegisterContainer = styled.div`
   max-width: 400px;
@@ -37,11 +37,11 @@ const Button = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  
+
   &:hover {
     background-color: #e67e22;
   }
-  
+
   &:disabled {
     background-color: #ccc;
     cursor: not-allowed;
@@ -57,11 +57,11 @@ const ErrorMessage = styled.p`
 const LoginLink = styled.div`
   text-align: center;
   margin-top: 20px;
-  
+
   a {
     color: #f39c12;
     text-decoration: none;
-    
+
     &:hover {
       text-decoration: underline;
     }
@@ -69,11 +69,11 @@ const LoginLink = styled.div`
 `;
 
 const Register = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [localError, setLocalError] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [localError, setLocalError] = useState("");
   const { register, loading, error, clearError } = useAuth();
   const navigate = useNavigate();
 
@@ -86,26 +86,26 @@ const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLocalError('');
+    setLocalError("");
     clearError();
-    
+
     // 入力検証
     if (!name || !email || !password) {
-      setLocalError('すべての項目を入力してください');
+      setLocalError("すべての項目を入力してください");
       return;
     }
-    
+
     if (password !== confirmPassword) {
-      setLocalError('パスワードが一致しません');
+      setLocalError("パスワードが一致しません");
       return;
     }
-    
+
     try {
       await register(name, email, password);
-      navigate('/');
-    } catch (err: any) {
+      navigate("/");
+    } catch (err: unknown) {
       // エラーはAuthContextで処理されるため、ここでは何もしない
-      console.error('登録エラー:', err);
+      console.error("登録エラー:", err);
     }
   };
 
@@ -142,11 +142,9 @@ const Register = () => {
           required
         />
         <Button type="submit" disabled={loading}>
-          {loading ? '登録中...' : '登録する'}
+          {loading ? "登録中..." : "登録する"}
         </Button>
-        {(localError || error) && (
-          <ErrorMessage>{localError || error}</ErrorMessage>
-        )}
+        {(localError || error) && <ErrorMessage>{localError || error}</ErrorMessage>}
       </Form>
       <LoginLink>
         すでにアカウントをお持ちの方は <Link to="/login">ログイン</Link>

@@ -50,7 +50,7 @@ const FormGroup = styled.div`
 `;
 
 const StyledInput = styled(Input)<{ $fullWidth?: boolean }>`
-  width: ${props => props.$fullWidth ? '100%' : 'auto'};
+  width: ${(props) => (props.$fullWidth ? "100%" : "auto")};
 `;
 
 const ErrorMessage = styled.div`
@@ -80,104 +80,87 @@ const RadioLabel = styled.label`
 `;
 
 const MemoCreate = () => {
-    const navigate = useNavigate();
-    const { addMemo } = useMemoContext();
-    
-    // React Hook Formの設定
-    const { 
-      register, 
-      handleSubmit, 
-      formState: { errors, isValid, isSubmitting },
-      reset
-    } = useMemoForm({
-      status: 'メモっとくね',
-      creator: '夫' // デフォルト値
-    });
+  const navigate = useNavigate();
+  const { addMemo } = useMemoContext();
 
-    const onSubmit = async (data: MemoFormData) => {
-        try {
-          await addMemo(data.content, data.creator);
-          reset();
-          navigate("/");
-        } catch (error) {
-          console.error('メモの作成に失敗しました:', error);
-        }
-    };
+  // React Hook Formの設定
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid, isSubmitting },
+    reset,
+  } = useMemoForm({
+    status: "メモっとくね",
+    creator: "夫", // デフォルト値
+  });
 
-    const handleCancel = () => {
-        navigate("/");
-    };
+  const onSubmit = async (data: MemoFormData) => {
+    try {
+      await addMemo(data.content, data.creator);
+      reset();
+      navigate("/");
+    } catch (error) {
+      console.error("メモの作成に失敗しました:", error);
+    }
+  };
 
-    return (
-        <Container>
-            <Header>
-                <Text variant="h1">夫婦の共有</Text>
-                <Text variant="p">新しいメモを作成します</Text>
-            </Header>
+  const handleCancel = () => {
+    navigate("/");
+  };
 
-            <FormContainer>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <FormGroup>
-                        <Text variant="label">メモの内容</Text>
-                        <StyledInput
-                            $inputSize="large"
-                            $fullWidth
-                            placeholder="メモの内容を入力してください"
-                            {...register("content")}
-                            autoFocus
-                        />
-                        {errors.content && (
-                            <ErrorMessage>{errors.content.message}</ErrorMessage>
-                        )}
-                    </FormGroup>
+  return (
+    <Container>
+      <Header>
+        <Text variant="h1">夫婦の共有</Text>
+        <Text variant="p">新しいメモを作成します</Text>
+      </Header>
 
-                    <FormGroup>
-                        <Text variant="label">作成者</Text>
-                        <RadioGroup>
-                            <RadioLabel>
-                                <input 
-                                  type="radio" 
-                                  value="夫" 
-                                  {...register("creator")} 
-                                />
-                                <Text variant="p">夫</Text>
-                            </RadioLabel>
-                            <RadioLabel>
-                                <input 
-                                  type="radio" 
-                                  value="妻" 
-                                  {...register("creator")} 
-                                />
-                                <Text variant="p">妻</Text>
-                            </RadioLabel>
-                        </RadioGroup>
-                        {errors.creator && (
-                            <ErrorMessage>{errors.creator.message}</ErrorMessage>
-                        )}
-                    </FormGroup>
+      <FormContainer>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <FormGroup>
+            <Text variant="label">メモの内容</Text>
+            <StyledInput
+              $inputSize="large"
+              $fullWidth
+              placeholder="メモの内容を入力してください"
+              {...register("content")}
+              autoFocus
+            />
+            {errors.content && <ErrorMessage>{errors.content.message}</ErrorMessage>}
+          </FormGroup>
 
-                    <ButtonGroup>
-                        <Button
-                            variant="primary"
-                            size="medium"
-                            type="submit"
-                            disabled={!isValid || isSubmitting}
-                        >
-                            メモを共有する
-                        </Button>
-                        <Button
-                            variant="secondary"
-                            size="medium"
-                            type="button"
-                            onClick={handleCancel}
-                        >
-                            キャンセル
-                        </Button>
-                    </ButtonGroup>
-                </form>
-            </FormContainer>
-        </Container>
-    );
+          <FormGroup>
+            <Text variant="label">作成者</Text>
+            <RadioGroup>
+              <RadioLabel>
+                <input type="radio" value="夫" {...register("creator")} />
+                <Text variant="p">夫</Text>
+              </RadioLabel>
+              <RadioLabel>
+                <input type="radio" value="妻" {...register("creator")} />
+                <Text variant="p">妻</Text>
+              </RadioLabel>
+            </RadioGroup>
+            {errors.creator && <ErrorMessage>{errors.creator.message}</ErrorMessage>}
+          </FormGroup>
+
+          <ButtonGroup>
+            <Button
+              variant="primary"
+              size="medium"
+              type="submit"
+              disabled={!isValid || isSubmitting}
+            >
+              メモを共有する
+            </Button>
+            <Button variant="secondary" size="medium" type="button" onClick={handleCancel}>
+              キャンセル
+            </Button>
+          </ButtonGroup>
+        </form>
+      </FormContainer>
+    </Container>
+  );
 };
 
 export default MemoCreate;

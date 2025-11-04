@@ -1,6 +1,6 @@
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { memoSchema, MemoFormData } from '../schemas/memoSchema';
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { memoSchema, MemoFormData } from "../schemas/memoSchema";
 
 /**
  * メモフォーム用のカスタムフック
@@ -11,9 +11,9 @@ export const useMemoForm = (initialData?: Partial<MemoFormData>) => {
   const methods = useForm<MemoFormData>({
     resolver: zodResolver(memoSchema),
     defaultValues: {
-      content: initialData?.content || '',
-      creator: initialData?.creator || '夫',
-      status: initialData?.status || 'メモっとくね',
+      content: initialData?.content || "",
+      creator: initialData?.creator || "夫",
+      status: initialData?.status || "メモっとくね",
       completed: initialData?.completed || false,
     },
   });

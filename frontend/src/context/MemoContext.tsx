@@ -12,7 +12,7 @@ type MemoContextType = {
   updateMemoItem: (id: number, memoData: Partial<Memo>) => Promise<Memo>;
   deleteMemoItem: (id: number) => Promise<void>;
   toggleMemoCompletion: (id: number) => Promise<Memo>;
-}
+};
 
 // default value
 const MemoContext = createContext<MemoContextType>({
@@ -20,10 +20,10 @@ const MemoContext = createContext<MemoContextType>({
   loading: false,
   error: null,
   fetchMemos: async () => {},
-  addMemo: async () => ({ content: '', status: '', creator: '', completed: false }),
-  updateMemoItem: async () => ({ content: '', status: '', creator: '', completed: false }),
+  addMemo: async () => ({ content: "", status: "", creator: "", completed: false }),
+  updateMemoItem: async () => ({ content: "", status: "", creator: "", completed: false }),
   deleteMemoItem: async () => {},
-  toggleMemoCompletion: async () => ({ content: '', status: '', creator: '', completed: false })
+  toggleMemoCompletion: async () => ({ content: "", status: "", creator: "", completed: false }),
 });
 
 type MemoProviderProps = {
@@ -33,34 +33,37 @@ type MemoProviderProps = {
 // Provider コンポーネント
 export const MemoProvider = ({ children }: MemoProviderProps) => {
   // useMemos フックを使用してメモ関連のロジックを取得
-  const { 
-    memos, 
-    loading, 
-    error, 
-    fetchMemos, 
-    addMemo, 
-    updateMemoItem, 
-    deleteMemoItem, 
-    toggleMemoCompletion 
+  const {
+    memos,
+    loading,
+    error,
+    fetchMemos,
+    addMemo,
+    updateMemoItem,
+    deleteMemoItem,
+    toggleMemoCompletion,
   } = useMemos();
-  
+
   return (
-    <MemoContext.Provider value={{ 
-      memos, 
-      loading, 
-      error, 
-      fetchMemos, 
-      addMemo, 
-      updateMemoItem, 
-      deleteMemoItem, 
-      toggleMemoCompletion 
-    }}>
+    <MemoContext.Provider
+      value={{
+        memos,
+        loading,
+        error,
+        fetchMemos,
+        addMemo,
+        updateMemoItem,
+        deleteMemoItem,
+        toggleMemoCompletion,
+      }}
+    >
       {children}
     </MemoContext.Provider>
   );
 };
 
 // Contextを簡単に使うためのcustomhook
+// eslint-disable-next-line react-refresh/only-export-components
 export const useMemoContext = () => {
   const context = useContext(MemoContext);
   if (context === undefined) {

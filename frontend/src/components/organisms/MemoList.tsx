@@ -1,9 +1,9 @@
 // src/components/organisms/MemoList.tsx
-import React from 'react';
-import styled from 'styled-components';
-import { MemoItem } from '../molecules/MemoItem';
-import { Text } from '../atoms/Text';
-import { Memo } from '../../types';
+import React from "react";
+import styled from "styled-components";
+import { MemoItem } from "../molecules/MemoItem";
+import { Text } from "../atoms/Text";
+import { Memo } from "../../types";
 
 interface MemoListProps {
   memos: Memo[];
@@ -30,17 +30,21 @@ const EmptyState = styled.div`
   color: #333;
 `;
 
-export const MemoList: React.FC<MemoListProps> = ({ 
-  memos, 
-  onToggleMemo, 
-  onDeleteMemo, 
-  onEditMemo 
+export const MemoList: React.FC<MemoListProps> = ({
+  memos,
+  onToggleMemo,
+  onDeleteMemo,
+  onEditMemo,
 }) => {
   if (memos.length === 0) {
     return (
       <EmptyState>
-        <Text variant="h4" align="center">今日は大丈夫？</Text>
-        <Text variant="p" align="center">メモが何もありません。新しいメモを作成しましょう！</Text>
+        <Text variant="h4" align="center">
+          今日は大丈夫？
+        </Text>
+        <Text variant="p" align="center">
+          メモが何もありません。新しいメモを作成しましょう！
+        </Text>
       </EmptyState>
     );
   }
@@ -48,7 +52,7 @@ export const MemoList: React.FC<MemoListProps> = ({
   return (
     <StyledMemoList>
       {memos.map((memo) => (
-        <MemoItem       
+        <MemoItem
           key={memo.id}
           memo={memo}
           onToggle={onToggleMemo}

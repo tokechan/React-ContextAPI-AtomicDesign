@@ -43,7 +43,7 @@ const DetailItem = styled.div`
   margin-bottom: 24px;
   border-bottom: 1px solid #f0f0f0;
   padding-bottom: 16px;
-  
+
   &:last-child {
     border-bottom: none;
     margin-bottom: 0;
@@ -68,7 +68,7 @@ const StatusBadge = styled.span<{ $completed: boolean }>`
   border-radius: 16px;
   font-size: 14px;
   font-weight: bold;
-  background-color: ${props => props.$completed ? '#4caf50' : '#f39c12'};
+  background-color: ${(props) => (props.$completed ? "#4caf50" : "#f39c12")};
   color: white;
   margin-left: 8px;
 `;
@@ -93,152 +93,140 @@ const ButtonGroup = styled.div`
 // 標準のDateオブジェクトを使用した日付フォーマット関数
 const formatDate = (dateString: string | undefined) => {
   try {
-    if (!dateString) return '日付不明';
-    
+    if (!dateString) return "日付不明";
+
     const date = new Date(dateString);
-    
+
     // 年、月、日、時、分を取得
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
     // 日本語形式でフォーマット
     return `${year}年${month}月${day}日 ${hours}:${minutes}`;
-  } catch (error) {
-    return '日付不明';
+  } catch {
+    return "日付不明";
   }
 };
 
 const MemoDetail = () => {
-    const { id } = useParams<{ id: string }>();
-    const navigate = useNavigate();
-    const { memos, deleteMemoItem } = useMemoContext();
-    const [loading, setLoading] = useState(true);
-    const [memo, setMemo] = useState<Memo | null>(null);
-    
-    // メモデータの取得
-    useEffect(() => {
-      if (id && memos.length > 0) {
-        const foundMemo = memos.find(m => m.id === Number(id));
-        if (foundMemo) {
-          setMemo(foundMemo);
-        }
-        setLoading(false);
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { memos, deleteMemoItem } = useMemoContext();
+  const [loading, setLoading] = useState(true);
+  const [memo, setMemo] = useState<Memo | null>(null);
+
+  // メモデータの取得
+  useEffect(() => {
+    if (id && memos.length > 0) {
+      const foundMemo = memos.find((m) => m.id === Number(id));
+      if (foundMemo) {
+        setMemo(foundMemo);
       }
-    }, [id, memos]);
-
-    const handleEdit = () => {
-      if (id) {
-        navigate(`/memo/${id}/edit`);
-      }
-    };
-
-    const handleDelete = async () => {
-      if (!id || !window.confirm('このメモを削除してもよろしいですか？')) return;
-      
-      try {
-        await deleteMemoItem(Number(id));
-        navigate('/');
-      } catch (error) {
-        console.error('メモの削除に失敗しました:', error);
-      }
-    };
-
-    const handleBack = () => {
-      navigate('/');
-    };
-
-    if (loading) {
-      return (
-        <Container>
-          <Text variant="h4" align="center">読み込み中...</Text>
-        </Container>
-      );
+      setLoading(false);
     }
+  }, [id, memos]);
 
-    if (!memo) {
-      return (
-        <Container>
-          <Text variant="h4" align="center">メモが見つかりませんでした</Text>
-          <Button
-            variant="primary"
-            size="medium"
-            onClick={handleBack}
-          >
-            ホームに戻る
-          </Button>
-        </Container>
-      );
+  const handleEdit = () => {
+    if (id) {
+      navigate(`/memo/${id}/edit`);
     }
+  };
 
+  const handleDelete = async () => {
+    if (!id || !window.confirm("このメモを削除してもよろしいですか？")) return;
+
+    try {
+      await deleteMemoItem(Number(id));
+      navigate("/");
+    } catch (error) {
+      console.error("メモの削除に失敗しました:", error);
+    }
+  };
+
+  const handleBack = () => {
+    navigate("/");
+  };
+
+  if (loading) {
     return (
-        <Container>
-            <Header>
-                <Text variant="h1">夫婦の共有</Text>
-                <Text variant="p">メモの詳細</Text>
-            </Header>
-
-            <DetailContainer>
-                <DetailItem>
-                    <Label variant="label">メモの内容</Label>
-                    <Content variant="p">{memo.content}</Content>
-                </DetailItem>
-                
-                <DetailItem>
-                    <Label variant="label">ステータス</Label>
-                    <Content variant="p">
-                        {memo.status}
-                        <StatusBadge $completed={memo.completed}>
-                            {memo.completed ? 'ちゃんとやった' : 'メモっとくね'}
-                        </StatusBadge>
-                    </Content>
-                </DetailItem>
-                
-                <DetailItem>
-                    <Label variant="label">作成者</Label>
-                    <Content variant="p">
-                        <CreatorBadge>{memo.creator}</CreatorBadge>
-                    </Content>
-                </DetailItem>
-                
-                <DetailItem>
-                    <Label variant="label">作成日時</Label>
-                    <Content variant="p">{formatDate(memo.created_at)}</Content>
-                </DetailItem>
-                
-                <DetailItem>
-                    <Label variant="label">更新日時</Label>
-                    <Content variant="p">{formatDate(memo.updated_at)}</Content>
-                </DetailItem>
-
-                <ButtonGroup>
-                    <Button
-                        variant="primary"
-                        size="medium"
-                        onClick={handleEdit}
-                    >
-                        編集する
-                    </Button>
-                    <Button
-                        variant="danger"
-                        size="medium"
-                        onClick={handleDelete}
-                    >
-                        削除する
-                    </Button>
-                    <Button
-                        variant="secondary"
-                        size="medium"
-                        onClick={handleBack}
-                    >
-                        戻る
-                    </Button>
-                </ButtonGroup>
-            </DetailContainer>
-        </Container>
+      <Container>
+        <Text variant="h4" align="center">
+          読み込み中...
+        </Text>
+      </Container>
     );
+  }
+
+  if (!memo) {
+    return (
+      <Container>
+        <Text variant="h4" align="center">
+          メモが見つかりませんでした
+        </Text>
+        <Button variant="primary" size="medium" onClick={handleBack}>
+          ホームに戻る
+        </Button>
+      </Container>
+    );
+  }
+
+  return (
+    <Container>
+      <Header>
+        <Text variant="h1">夫婦の共有</Text>
+        <Text variant="p">メモの詳細</Text>
+      </Header>
+
+      <DetailContainer>
+        <DetailItem>
+          <Label variant="label">メモの内容</Label>
+          <Content variant="p">{memo.content}</Content>
+        </DetailItem>
+
+        <DetailItem>
+          <Label variant="label">ステータス</Label>
+          <Content variant="p">
+            {memo.status}
+            <StatusBadge $completed={memo.completed}>
+              {memo.completed ? "ちゃんとやった" : "メモっとくね"}
+            </StatusBadge>
+          </Content>
+        </DetailItem>
+
+        <DetailItem>
+          <Label variant="label">作成者</Label>
+          <Content variant="p">
+            <CreatorBadge>{memo.creator}</CreatorBadge>
+          </Content>
+        </DetailItem>
+
+        <DetailItem>
+          <Label variant="label">作成日時</Label>
+          <Content variant="p">{formatDate(memo.created_at)}</Content>
+        </DetailItem>
+
+        <DetailItem>
+          <Label variant="label">更新日時</Label>
+          <Content variant="p">{formatDate(memo.updated_at)}</Content>
+        </DetailItem>
+
+        <ButtonGroup>
+          <Button variant="primary" size="medium" onClick={handleEdit}>
+            編集する
+          </Button>
+          <Button variant="danger" size="medium" onClick={handleDelete}>
+            削除する
+          </Button>
+          <Button variant="secondary" size="medium" onClick={handleBack}>
+            戻る
+          </Button>
+        </ButtonGroup>
+      </DetailContainer>
+    </Container>
+  );
 };
 
 export default MemoDetail;

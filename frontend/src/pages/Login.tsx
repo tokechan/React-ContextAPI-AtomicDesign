@@ -1,8 +1,8 @@
 // src/pages/Login.tsx
-import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import styled from 'styled-components';
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import styled from "styled-components";
 
 const LoginContainer = styled.div`
   max-width: 400px;
@@ -37,11 +37,11 @@ const Button = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  
+
   &:hover {
     background-color: #e67e22;
   }
-  
+
   &:disabled {
     background-color: #ccc;
     cursor: not-allowed;
@@ -56,11 +56,11 @@ const ErrorMessage = styled.p`
 const RegisterLink = styled.div`
   text-align: center;
   margin-top: 20px;
-  
+
   a {
     color: #f39c12;
     text-decoration: none;
-    
+
     &:hover {
       text-decoration: underline;
     }
@@ -68,9 +68,9 @@ const RegisterLink = styled.div`
 `;
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [localError, setLocalError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [localError, setLocalError] = useState("");
   const { login, loading, error, clearError } = useAuth();
   const navigate = useNavigate();
 
@@ -83,20 +83,20 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLocalError('');
+    setLocalError("");
     clearError();
-    
+
     if (!email || !password) {
-      setLocalError('メールアドレスとパスワードを入力してください');
+      setLocalError("メールアドレスとパスワードを入力してください");
       return;
     }
-    
+
     try {
       await login(email, password);
-      navigate('/');
-    } catch (err: any) {
+      navigate("/");
+    } catch (err: unknown) {
       // エラーはAuthContextで処理されるため、ここでは何もしない
-      console.error('ログインエラー:', err);
+      console.error("ログインエラー:", err);
     }
   };
 
@@ -119,11 +119,9 @@ const Login = () => {
           required
         />
         <Button type="submit" disabled={loading}>
-          {loading ? 'ログイン中...' : 'ログイン'}
+          {loading ? "ログイン中..." : "ログイン"}
         </Button>
-        {(localError || error) && (
-          <ErrorMessage>{localError || error}</ErrorMessage>
-        )}
+        {(localError || error) && <ErrorMessage>{localError || error}</ErrorMessage>}
       </Form>
       <RegisterLink>
         アカウントをお持ちでない方は <Link to="/register">新規登録</Link>

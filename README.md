@@ -93,6 +93,12 @@
    npm run dev
    ```
 
+5. コード品質チェック（任意）
+   ```bash
+   npm run lint          # ESLint
+   npm run format:check  # Prettier
+   ```
+
 ## プロジェクト構造
 
 ```
@@ -163,3 +169,8 @@ npm run dev
 ```
 
 DB をリセットしたい場合は `docker compose exec app php artisan migrate:fresh --seed` を実行してください。
+
+## 品質チェックとCI
+
+- フロントエンドでは ESLint と Prettier を導入しています。`npm run lint` や `npm run format`, `npm run format:check` で手元のコードを検証・整形できます。
+- `.github/workflows/lint.yml` に GitHub Actions ワークフローを追加しており、PR/主要ブランチへの push 時に `npm run lint` と `npm run format:check` が自動実行されます。違反がある場合は CI が失敗し、PR がマージできない状態になります。

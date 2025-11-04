@@ -1,11 +1,11 @@
 // src/pages/Home.tsx
-import styled from 'styled-components';
-import { Text } from '../components/atoms/Text';
-import { MemoList } from '../components/organisms/MemoList';
-import { useMemoContext } from '../context/MemoContext';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '../components/atoms';
-import { useEffect } from 'react';
+import styled from "styled-components";
+import { Text } from "../components/atoms/Text";
+import { MemoList } from "../components/organisms/MemoList";
+import { useMemoContext } from "../context/MemoContext";
+import { useNavigate } from "react-router-dom";
+import { Button } from "../components/atoms";
+import { useEffect } from "react";
 
 const Container = styled.div`
   display: flex;
@@ -41,31 +41,45 @@ const MemoListWrapper = styled.div`
 `;
 
 export const Home = () => {
-  const { memos, loading, error, fetchMemos, toggleMemoCompletion, deleteMemoItem, updateMemoItem } = useMemoContext();
+  const {
+    memos,
+    loading,
+    error,
+    fetchMemos,
+    toggleMemoCompletion,
+    deleteMemoItem,
+    updateMemoItem,
+  } = useMemoContext();
   const navigate = useNavigate();
-  
+
   // コンポーネントマウント時に一度だけメモを取得
   useEffect(() => {
     fetchMemos();
-  }, []);
-  
+  }, [fetchMemos]);
+
   const handleCreateNew = () => {
-    navigate('/memo/new');
+    navigate("/memo/new");
   };
-  
+
   if (loading) {
     return (
       <Container>
-        <Text variant="h4" align="center">読み込み中...</Text>
+        <Text variant="h4" align="center">
+          読み込み中...
+        </Text>
       </Container>
     );
   }
-  
+
   if (error) {
     return (
       <Container>
-        <Text variant="h4" align="center">エラーが発生しました</Text>
-        <Text variant="p" align="center">{error}</Text>
+        <Text variant="h4" align="center">
+          エラーが発生しました
+        </Text>
+        <Text variant="p" align="center">
+          {error}
+        </Text>
       </Container>
     );
   }
@@ -76,22 +90,18 @@ export const Home = () => {
         <Text variant="h1">夫婦の共有</Text>
         <Text variant="p">いつものこと💁🏼メモっとくねー📝</Text>
         <HeaderActions>
-          <Button
-            variant="primary"
-            size="medium"
-            onClick={handleCreateNew}
-          >
+          <Button variant="primary" size="medium" onClick={handleCreateNew}>
             共有するべし⚠️
           </Button>
         </HeaderActions>
       </Header>
-      
+
       <MemoListWrapper>
-        <MemoList 
-          memos={memos} 
-          onToggleMemo={toggleMemoCompletion} 
+        <MemoList
+          memos={memos}
+          onToggleMemo={toggleMemoCompletion}
           onEditMemo={updateMemoItem}
-          onDeleteMemo={deleteMemoItem} 
+          onDeleteMemo={deleteMemoItem}
         />
       </MemoListWrapper>
     </Container>

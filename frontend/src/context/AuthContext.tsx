@@ -1,12 +1,13 @@
 // src/context/AuthContext.tsx
-import React, { createContext, useState, useEffect, useContext } from 'react';
-import { 
-  login as apiLogin, 
-  logout as apiLogout, 
+import React, { createContext, useState, useEffect, useContext } from "react";
+import { isAxiosError } from "axios";
+import {
+  login as apiLogin,
+  logout as apiLogout,
   register as apiRegister,
-  initAuth, 
-  getCurrentUser 
-} from '../services/auth';
+  initAuth,
+  getCurrentUser,
+} from "../services/auth";
 
 // ユーザー型定義
 interface User {
@@ -42,27 +43,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // アプリ起動時に認証状態を復元
     const checkAuth = async () => {
       const hasToken = initAuth();
-      
+
       if (hasToken) {
         try {
           // トークンが存在する場合、ユーザー情報を取得（実際のAPIを使用）
           const userData = await getCurrentUser();
           setUser(userData);
           setIsAuthenticated(true);
-        } catch (error: any) {
-          console.error('認証エラー:', error);
+        } catch (err: unknown) {
+          console.error("認証エラー:", err);
           // エラーが発生した場合、認証状態をリセット
           await apiLogout();
           setIsAuthenticated(false);
-          
-          if (error.response?.data?.message) {
-            setError(error.response.data.message);
+
+          if (isAxiosError(err) && err.response?.data?.message) {
+            setError(err.response.data.message);
           } else {
-            setError('認証に失敗しました。再度ログインしてください。');
+            setError("認証に失敗しました。再度ログインしてください。");
           }
         }
       }
-      
+
       setLoading(false);
     };
 
@@ -73,24 +74,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const register = async (name: string, email: string, password: string) => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const userData = await apiRegister(name, email, password);
       setUser(userData);
       setIsAuthenticated(true);
-    } catch (error: any) {
-      if (error.response?.data?.errors) {
+    } catch (err: unknown) {
+      if (isAxiosError(err) && err.response?.data?.errors) {
         // バリデーションエラーの処理
-        const errorMessages = Object.values(error.response.data.errors)
-          .flat()
-          .join('\n');
+        const errorMessages = Object.values(err.response.data.errors).flat().join("\n");
         setError(errorMessages);
-      } else if (error.response?.data?.message) {
-        setError(error.response.data.message);
+      } else if (isAxiosError(err) && err.response?.data?.message) {
+        setError(err.response.data.message);
       } else {
-        setError('登録中にエラーが発生しました。');
+        setError("登録中にエラーが発生しました。");
       }
-      throw error;
+      throw err;
     } finally {
       setLoading(false);
     }
@@ -100,18 +99,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, password: string) => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const userData = await apiLogin(email, password);
       setUser(userData);
       setIsAuthenticated(true);
-    } catch (error: any) {
-      if (error.response?.data?.message) {
-        setError(error.response.data.message);
+    } catch (err: unknown) {
+      if (isAxiosError(err) && err.response?.data?.message) {
+        setError(err.response.data.message);
       } else {
-        setError('ログインに失敗しました。メールアドレスとパスワードを確認してください。');
+        setError("ログインに失敗しました。メールアドレスとパスワードを確認してください。");
       }
-      throw error;
+      throw err;
     } finally {
       setLoading(false);
     }
@@ -120,11 +119,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // ログアウト
   const logout = async () => {
     setLoading(true);
-    
+
     try {
       await apiLogout();
-    } catch (error: any) {
-      console.error('ログアウト中にエラーが発生しました:', error);
+    } catch (err: unknown) {
+      console.error("ログアウト中にエラーが発生しました:", err);
     } finally {
       setUser(null);
       setIsAuthenticated(false);
@@ -138,16 +137,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider 
-      value={{ 
-        user, 
-        loading, 
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
         error,
         register,
-        login, 
-        logout, 
+        login,
+        logout,
         isAuthenticated,
-        clearError
+        clearError,
       }}
     >
       {children}
@@ -155,10 +154,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

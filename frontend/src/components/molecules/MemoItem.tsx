@@ -1,11 +1,11 @@
 // src/components/molecules/MemoItem.tsx
-import React from 'react';
-import styled from 'styled-components';
-import { Checkbox } from '../atoms/Checkbox';
-import { Text } from '../atoms/Text';
-import { Button } from '../atoms/Button';
-import { useNavigate } from 'react-router-dom';
-import { Memo } from '../../types';
+import React from "react";
+import styled from "styled-components";
+import { Checkbox } from "../atoms/Checkbox";
+import { Text } from "../atoms/Text";
+import { Button } from "../atoms/Button";
+import { useNavigate } from "react-router-dom";
+import { Memo } from "../../types";
 
 export interface MemoItemProps {
   memo: Memo;
@@ -25,7 +25,7 @@ const StyledMemoItem = styled.div`
   transition: all 0.3s ease;
   width: 100%;
   box-sizing: border-box;
-  
+
   &:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
     transform: translateY(-2px);
@@ -44,7 +44,7 @@ const MemoCreator = styled(Text)`
 `;
 
 const MemoStatus = styled(Text)<{ $completed: boolean }>`
-  color: ${props => props.$completed ? '#27ae60' : '#f39c12'};
+  color: ${(props) => (props.$completed ? "#27ae60" : "#f39c12")};
   font-style: italic;
 `;
 
@@ -52,15 +52,15 @@ const MemoContent = styled.div`
   flex: 1;
   margin: 8px 0;
   cursor: pointer;
-  
+
   &:hover {
     text-decoration: underline;
   }
 `;
 
 const MemoText = styled(Text)<{ $completed: boolean }>`
-  text-decoration: ${props => props.$completed ? 'line-through' : 'none'};
-  color: ${props => props.$completed ? '#718096' : '#333'};
+  text-decoration: ${(props) => (props.$completed ? "line-through" : "none")};
+  color: ${(props) => (props.$completed ? "#718096" : "#333")};
 `;
 
 const MemoFooter = styled.div`
@@ -77,7 +77,7 @@ const ButtonsContainer = styled.div`
 
 const DeleteButton = styled(Button)`
   opacity: 0.6;
-  
+
   &:hover {
     opacity: 1;
   }
@@ -96,29 +96,24 @@ const DateInfo = styled(Text)`
   color: #718096;
 `;
 
-export const MemoItem: React.FC<MemoItemProps> = ({
-  memo,
-  onToggle,
-  onDelete,
-  onEdit
-}) => {
+export const MemoItem: React.FC<MemoItemProps> = ({ memo, onToggle, onDelete, onEdit }) => {
   const navigate = useNavigate();
-  const { id, content, status, creator, completed, created_at, updated_at } = memo;
-  
-  const formattedDate = updated_at 
-    ? new Date(updated_at).toLocaleDateString('ja-JP', { 
-        year: 'numeric', 
-        month: 'short', 
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
+  const { id, content, status, creator, completed, updated_at } = memo;
+
+  const formattedDate = updated_at
+    ? new Date(updated_at).toLocaleDateString("ja-JP", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
       })
-    : '';
+    : "";
 
   const handleToggle = () => {
     if (id) onToggle(id);
   };
-  
+
   const handleDelete = () => {
     if (id) onDelete(id);
   };
@@ -128,38 +123,33 @@ export const MemoItem: React.FC<MemoItemProps> = ({
   };
 
   const handleTextClick = () => {
-    if (id) navigate(`/memo/${id}`);    
-  }
-  
+    if (id) navigate(`/memo/${id}`);
+  };
+
   return (
     <StyledMemoItem>
       <MemoHeader>
         <MemoCreator variant="p">{creator}</MemoCreator>
         <MemoStatus variant="p" $completed={completed}>
-          {completed ? 'ちゃんとやった！' : status}
+          {completed ? "ちゃんとやった！" : status}
         </MemoStatus>
       </MemoHeader>
-      
+
       <MemoContent onClick={handleTextClick}>
-        <MemoText
-          variant="p"
-          $completed={completed}
-        >
+        <MemoText variant="p" $completed={completed}>
           {content}
         </MemoText>
       </MemoContent>
-      
+
       <MemoFooter>
         <Checkbox
           checked={completed}
           onChange={handleToggle}
-          aria-label={`Mark "${content}" as ${completed ? 'incomplete' : 'complete'}`}
+          aria-label={`Mark "${content}" as ${completed ? "incomplete" : "complete"}`}
         />
-        
-        <DateInfo variant="span">
-          {formattedDate}
-        </DateInfo>
-        
+
+        <DateInfo variant="span">{formattedDate}</DateInfo>
+
         <ButtonsContainer>
           {onEdit && (
             <EditButton

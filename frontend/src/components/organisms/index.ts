@@ -1,1 +1,1 @@
-export * from './MemoList';
+export * from "./MemoList";
