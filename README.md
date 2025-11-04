@@ -40,20 +40,28 @@
 1. リポジトリをクローン
    ```bash
    git clone <リポジトリURL>
-   cd Todo-app
+   cd React-Router-demo
    ```
 
-2. バックエンドディレクトリに移動
+2. バックエンドディレクトリに移動し依存関係をインストール
    ```bash
    cd backend
+   composer install
    ```
 
-3. Docker コンテナを起動
+3. 環境変数ファイルを作成してアプリキーを生成
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+4. Docker コンテナを起動  
+   ※ Intel/AMD 環境ではそのまま、Apple Silicon では `docker-compose.yml` の `platform` 行をコメント解除してください。
    ```bash
    docker-compose up -d
    ```
 
-4. マイグレーションを実行
+5. マイグレーションを実行
    ```bash
    docker-compose exec app php artisan migrate
    ```
@@ -70,7 +78,12 @@
    npm install
    ```
 
-3. 開発サーバーを起動
+3. 環境変数ファイルを作成
+   ```bash
+   cp .env.example .env
+   ```
+
+4. 開発サーバーを起動
    ```bash
    npm run dev
    ```
@@ -78,7 +91,7 @@
 ## プロジェクト構造
 
 ```
-Todo-app/
+React-Router-demo/
 ├── backend/         # Laravel バックエンド
 │   ├── app/         # アプリケーションコード
 │   │   └── Http/Controllers/API/  # APIコントローラー
@@ -91,6 +104,7 @@ Todo-app/
 │   ├── src/         # ソースコード
 │   │   ├── components/  # UIコンポーネント
 │   │   ├── api/     # APIクライアント
+│   │   ├── context/ # 認証・メモの状態管理
 │   │   └── ...
 │   └── ...
 └── .gitignore       # Git無視設定

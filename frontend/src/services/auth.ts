@@ -1,8 +1,6 @@
 // src/services/auth.ts
 import axios from 'axios';
-
-// API URLの設定
-const API_URL = 'http://localhost:8000/api';
+import { API_URL } from '../config';
 
 // ユーザー登録関数
 export const register = async (name: string, email: string, password: string) => {

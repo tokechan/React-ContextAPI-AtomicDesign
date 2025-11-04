@@ -1,7 +1,5 @@
 import axios from "axios";
-
-//APIのベースURL
-const API_URL = "http://localhost:8000/api";
+import { API_URL } from "../config";
 
 //メモの型定義
 export interface Memo {
