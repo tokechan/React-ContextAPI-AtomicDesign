@@ -146,3 +146,20 @@ docker-compose exec app php artisan db:seed
 
 - メールアドレス: `test@example.com`
 - パスワード: `password`
+
+## ローカル起動まとめ
+
+初回セットアップが完了した後の起動手順は以下の通りです。
+
+```bash
+# backend
+cd backend
+docker compose up -d
+docker compose exec app php artisan migrate --seed  # DB 初期化＆テストユーザー投入
+
+# frontend（別ターミナル）
+cd ../frontend
+npm run dev
+```
+
+DB をリセットしたい場合は `docker compose exec app php artisan migrate:fresh --seed` を実行してください。
