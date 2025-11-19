@@ -1,4 +1,5 @@
-# React × Laravel デモアプリケーション
+# React × Laravel 
+# 状態管理とコンポーネント設計を検証
 
 フロントエンド（React + Vite）とバックエンド（Laravel 11 API）構成。
 コンポーネント粒度の最適化と状態管理の分離方針を検証。
