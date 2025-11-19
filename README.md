@@ -11,7 +11,6 @@ Docker Compose でバックエンドを立ち上げつつ、フロントエン�
 ```
 React-Router-demo/
 ├── frontend/                    # React TypeScript アプリ
-│   ├── public/                  # 静的ファイル
 │   ├── src/
 │   │   ├── api/                 # Axios クライアント
 │   │   ├── components/
@@ -48,6 +47,7 @@ React-Router-demo/
 ## ローカルセットアップ
 
 ### 前提条件
+
 - Docker / Docker Compose
 - Node.js / npm
 
@@ -94,9 +94,9 @@ DB をリセットする場合は `docker compose exec app php artisan migrate:f
 ## Cloudflare Pages への自動デプロイ
 
 - `.github/workflows/deploy-pages.yml` により、`main` ブランチへの push または手動実行で Cloudflare Pages へビルド＆デプロイします。
-- GitHub リポジトリに以下のシークレットを登録。  
-  - `CLOUDFLARE_ACCOUNT_ID`  
-  - `CLOUDFLARE_API_TOKEN`（Pages:Edit 権限付き）  
+- GitHub リポジトリに以下のシークレットを登録。
+  - `CLOUDFLARE_ACCOUNT_ID`
+  - `CLOUDFLARE_API_TOKEN`（Pages:Edit 権限付き）
   - `CLOUDFLARE_PAGES_PROJECT_NAME`
 - Cloudflare Pages ダッシュボードの「Settings > Environment Variables」で `VITE_API_BASE_URL` などの環境変数を設定。Preview / Production 個別設定が可能。
 - ワークフロー内では `npm run ci:lint` → `npm run build` → `frontend/dist` をアップロードするため、Lint/Prettier を通過しないコードはデプロイされない。
