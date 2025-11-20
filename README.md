@@ -11,7 +11,7 @@ Docker Compose でバックエンドを立ち上げつつ、フロントエン�
 ## プロジェクト構成
 
 ```
-React-Router-demo/
+React-ContextAPI-AtomicDesign/
 ├── frontend/                    # React TypeScript アプリ
 │   ├── src/
 │   │   ├── api/                 # Axios クライアント
@@ -59,7 +59,7 @@ React-Router-demo/
 
 ```bash
 git clone <repository>
-cd React-Router-demo/backend
+cd React-ContextAPI-AtomicDesign/backend
 composer install
 cp .env.example .env
 php artisan key:generate
