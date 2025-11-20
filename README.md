@@ -83,6 +83,20 @@ npm run format:check
 
 DB をリセットする場合は `docker compose exec app php artisan migrate:fresh --seed` を使用。
 
+### トラブルシューティング
+
+#### CORS エラーが発生する場合
+
+Vite は利用可能なポートを自動選択するため（デフォルト 5173、使用中なら 5174、5175...）、フロントエンドが想定外のポートで起動することがあります。
+
+CORS エラーが発生した場合：
+
+1. フロントエンドの起動ポートを確認（例: `http://localhost:5175`）
+2. `backend/config/cors.php` の `allowed_origins` に該当ポートを追加
+3. 設定を反映: `docker compose exec app php artisan config:clear` または `docker compose restart app`
+
+現在の設定では `http://localhost:5173`, `5174`, `5175` を許可しています。
+
 ## 動作確認ユーザー
 
 シーディングすると以下のユーザーが作成。
