@@ -1,4 +1,5 @@
-# React × Laravel 
+# React × Laravel
+
 # 状態管理とコンポーネント設計を検証
 
 フロントエンド（React + Vite）とバックエンド（Laravel 11 API）構成。
@@ -29,6 +30,7 @@ React-Router-demo/
 │   ├── vite.config.ts           # Vite 設定
 │   ├── eslint.config.js         # ESLint (Flat Config)
 │   ├── .prettierrc.json / .prettierignore
+│   ├── .env.example             # 環境変数テンプレート
 │   └── package.json             # 依存関係
 ├── backend/                     # Laravel API
 │   ├── app/
@@ -39,6 +41,7 @@ React-Router-demo/
 │   ├── docker/                  # Nginx 設定
 │   ├── routes/                  # api.php など
 │   ├── docker-compose.yml       # バックエンド用 Docker Compose
+│   ├── .env.example             # 環境変数テンプレート
 │   └── composer.json            # PHP 依存関係
 └── .github/workflows/
     ├── lint.yml                 # ESLint & Prettier チェック
